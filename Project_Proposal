@@ -1,3 +1,1 @@
-# Auto detect text files and perform LF normalization
-* text=auto
 Project Overview: The Land Type Classification using Sentinel-2 Satellite Images project focuses on leveraging Deep Neural Networks (DNNs) to classify different land types (such as agriculture, water, urban areas, desert, roads, and trees) based on satellite imagery from the European Space Agency’s Sentinel-2 mission. Sentinel-2 provides free multispectral images that are ideal for land use classification. The objective of this project is to develop a DNN model that accurately classifies land types, aiding in various applications such as urban planning, environmental monitoring, and resource management. The project will utilize opensource datasets or generate custom datasets using tools like QGIS. 
