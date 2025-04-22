@@ -114,7 +114,7 @@ def extract_advanced_features(image_path, bins=32, distances=[1], angles=[0]):
 
     array_columns = ['vari', 'exg', 'cive']
     for col in array_columns:
-        feature_df = summarize_array_column(feature_df, array_columns)
+        feature_df = summarize_array_column(feature_df, col)
     
     return feature_df
 
