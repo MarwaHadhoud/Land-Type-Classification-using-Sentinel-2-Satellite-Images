@@ -17,7 +17,9 @@ import json
 @st.cache_resource
 def load_class_labels():
     with open('label_map.json') as f:
-        return json.load(f)
+        original_map = json.load(f)
+        return {v: k for k, v in original_map.items()}  # Reverse to {0: "AnnualCrop", ...}
+        
 
 def load_models():
     return {
@@ -162,19 +164,23 @@ def main():
             
 
             # Get class name from JSON mapping
-            class_name = models['class_labels'].get(str(pred), f"Class {pred}")
+            class_name = models['class_labels'].get(pred, f"Unknown Class {pred}")
             
             # Display results
             st.success(f"Predicted: {class_name}")
             
             # Show probabilities with class names
             proba_df = pd.DataFrame({
-                'Class': [models['class_labels'].get(str(i), f"Class {i}") for i in range(len(proba))],
+                'Class': [models['class_labels'][i] for i in range(len(proba))],  # Uses integer indices
                 'Probability': proba
-            }).set_index('Class')
+            }).set_index('Class')            
             
             st.bar_chart(proba_df)
             st.table(proba_df)
+
+            st.write("## Model-Class Verification")
+            st.write("Model class order:", models['svm'].classes_)  # Should show [0,1,2,...]
+            st.write("Label mapping:", models['class_labels'])      # Should show {0: "AnnualCrop", ...}
 
 
 if __name__ == "__main__":
