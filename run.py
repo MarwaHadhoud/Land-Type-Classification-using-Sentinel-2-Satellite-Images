@@ -113,10 +113,10 @@ def extract_advanced_features(image_path, bins=32, distances=[1], angles=[0]):
     feature_df = pd.DataFrame([features])
 
     array_columns = ['vari', 'exg', 'cive']
-
-    feature_df_new = summarize_array_column(feature_df, array_columns)
+    for col in array_columns:
+        feature_df = summarize_array_column(feature_df, array_columns)
     
-    return feature_df_new
+    return feature_df
 
 
 # Streamlit app
