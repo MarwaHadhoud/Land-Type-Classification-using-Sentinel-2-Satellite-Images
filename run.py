@@ -102,7 +102,7 @@ def extract_advanced_features(image_path, bins=32, distances=[1], angles=[0]):
     # 5. VEGETATION INDICES
     # ======================
     # RGB-based approximations (no NIR available)
-    features['vari'] = (G - R) / (G + R - B + 1e-10)  # Visible Atmospherically Resistant Index
+    features['vari'] = np.nan_to_num((G - R) / (G + R - B + 1e-10))  # Visible Atmospherically Resistant Index
     features['exg'] = 2*G - R - B  # Excess Green Index
     features['cive'] = 0.441*R - 0.811*G + 0.385*B + 18.787  # Color Index of Vegetation Extraction
 
@@ -139,7 +139,7 @@ def main():
     if st.button("Extract Features"):
         with st.spinner("Extracting features..."):
             features_df = extract_advanced_features(img_path)
-            st.session_state.features = features_df.values[0]  # Store array for prediction
+            st.session_state.features = features_df.iloc[0].values  # Store array for prediction
             st.success("Feature extraction complete!")
             
             # Display features
