@@ -2,7 +2,13 @@ import streamlit as st
 from joblib import load
 import pandas as pd
 import numpy as np
-from skimage.io import imread
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from skimage.util import img_as_ubyte
+from sklearn.metrics import classification_report , confusion_matrix
+from skimage.feature import graycomatrix, graycoprops
+from skimage import io, color, exposure, transform
 from PIL import Image
 import os
 import json
@@ -15,10 +21,12 @@ def load_class_labels():
 
 def load_models():
     return {
-        'svm': load('svm_model.joblib'),
-        'scaler': load('svm_scaler.joblib'),
-        'rf': load('rf_model.joblib'),
-        'feature_names': load('feature_names.joblib')  
+        'svm': load('models/svm_model.joblib'),
+        'scaler': load('models/svm_scaler.joblib'),
+        'rf': load('models/rf_model.joblib'),
+        'feature_names': load('models/feature_names.joblib'),
+        'class_labels': load_class_labels()  
+  
     }
 # functions that used for extract features 
 def summarize_array_column(df, column_name):
@@ -29,7 +37,7 @@ def summarize_array_column(df, column_name):
     return df.drop(column_name, axis=1)
 
 # function to extract features
-
+@st.cache_data
 def extract_advanced_features(image_path, bins=32, distances=[1], angles=[0]):
     """
     Extract comprehensive features from RGB images including:
@@ -130,7 +138,7 @@ def main():
     # Feature extraction button
     if st.button("Extract Features"):
         with st.spinner("Extracting features..."):
-            features_df = extract_all_features(img_path)
+            features_df = extract_advanced_features(img_path)
             st.session_state.features = features_df.values[0]  # Store array for prediction
             st.success("Feature extraction complete!")
             
@@ -154,7 +162,7 @@ def main():
             
 
             # Get class name from JSON mapping
-            class_name = models['class_labels'].get(str(pred_class), f"Class {pred_class}")
+            class_name = models['class_labels'].get(str(pred), f"Class {pred}")
             
             # Display results
             st.success(f"Predicted: {class_name}")
