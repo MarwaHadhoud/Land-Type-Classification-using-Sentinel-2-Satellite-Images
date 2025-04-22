@@ -161,10 +161,10 @@ def main():
                 if hasattr(models['svm'], 'predict_proba'):
                     proba = models['svm'].predict_proba(scaled_features)[0]
                 else:
-                # Fallback: Create artificial probabilities (100% for predicted class)
-                num_classes = len(models['class_labels'])
-                proba = np.zeros(num_classes)
-                proba[pred] = 1.0
+                    # Fallback: Create artificial probabilities (100% for predicted class)
+                    num_classes = len(models['class_labels'])
+                    proba = np.zeros(num_classes)
+                    proba[pred] = 1.0
             else:
                 pred = models['rf'].predict([st.session_state.features])[0]
                 proba = models['rf'].predict_proba([st.session_state.features])[0]
