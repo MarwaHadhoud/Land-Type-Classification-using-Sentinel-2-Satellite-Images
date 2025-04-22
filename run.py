@@ -154,7 +154,8 @@ def main():
         if st.button("Predict"):
             if model_choice == 'SVM':
                 scaled_features = models['scaler'].transform([st.session_state.features])
-                pred = models['svm'].predict(scaled_features)[0]                
+                pred = models['svm'].predict(scaled_features)[0]
+                proba = models['svm'].predict_proba(scaled_features)[0]
             else:
                 pred = models['rf'].predict([st.session_state.features])[0]
                 proba = models['rf'].predict_proba([st.session_state.features])[0]
