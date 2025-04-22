@@ -1,0 +1,5 @@
+In this folder you will find 4 files
+svm_model.joblib
+rf_model.joblib
+svm_scaler.joblib
+feature_names.joblib
